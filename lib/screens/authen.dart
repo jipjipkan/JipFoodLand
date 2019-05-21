@@ -1,5 +1,3 @@
-import 'dart:ui' as prefix0;
-
 import 'package:flutter/material.dart';
 
 class Authen extends StatefulWidget {
@@ -8,25 +6,85 @@ class Authen extends StatefulWidget {
 }
 
 class _AuthenState extends State<Authen> {
-  Widget showLogo(){
+  Widget showSignUp() {
+    return RaisedButton(
+      child: Text('Sign Up'),
+      onPressed: () {},
+    );
+  }
+
+  Widget showSignIn() {
+    return RaisedButton(
+      child: Text('Sign In'),
+      onPressed: () {},
+    );
+  }
+
+  Widget showPassword() {
+    return TextFormField(
+      decoration: InputDecoration(
+          labelText: 'Password :', hintText: 'More 6 Charactor'),
+    );
+  }
+
+  Widget showUser() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'User :', hintText: 'Your User'),
+    );
+  }
+
+  Widget showLogo() {
     return Image.asset('images/dd.png');
   }
-  
- Widget showTitle(){
-    return Text('Jip Food Land',style: TextStyle(fontSize: 25.0,fontWeight: FontWeight.bold, color: Colors.red[900]));
+
+  Widget showTitle() {
+    return Text(
+      'Jip Food Land',
+      style: TextStyle(
+          fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.red[900]),
+    );
   }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(resizeToAvoidBottomPadding: false,
         body: Container(
-      margin: EdgeInsets.only(top: 50.0),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.white, Colors.yellow[900]], begin: Alignment(-1, -1))),
+      padding: EdgeInsets.only(top: 70.0),
       alignment: Alignment(0, -1),
       child: Column(
-        children: <Widget>[showLogo(), 
-        Container(margin: EdgeInsets.only(top: 10.0),
-        child: showTitle(),
-        )],
+        children: <Widget>[
+          showLogo(),
+          Container(
+            margin: EdgeInsets.only(top: 10.0),
+            child: showTitle(),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 50.0, right: 50.0),
+            child: showUser(),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 50.0, right: 50.0),
+            child: showPassword(),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 50.0, right: 50.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: showSignIn(),
+                ),
+                Expanded(
+                  child: showSignUp(),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     ));
   }
 }
+
