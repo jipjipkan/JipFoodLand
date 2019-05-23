@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jip_food_land/screens/register.dart';
+import 'package:http/http.dart' show get;
+import 'dart:convert';
 
 class Authen extends StatefulWidget {
   @override
@@ -7,6 +9,9 @@ class Authen extends StatefulWidget {
 }
 
 class _AuthenState extends State<Authen> {
+  final formKey = GlobalKey<FormState>();
+  String user, password;
+
   Widget showSignUp(BuildContext context) {
     return RaisedButton(
       child: Text('Sign Up'),
@@ -16,7 +21,7 @@ class _AuthenState extends State<Authen> {
         // Create Router
         var registerRoute =
             MaterialPageRoute(builder: (BuildContext context) => Register());
-            Navigator.of(context).push(registerRoute);
+        Navigator.of(context).push(registerRoute);
       },
     );
   }
@@ -24,20 +29,51 @@ class _AuthenState extends State<Authen> {
   Widget showSignIn() {
     return RaisedButton(
       child: Text('Sign In'),
-      onPressed: () {},
+      onPressed: () {
+        if (formKey.currentState.validate()) {
+          formKey.currentState.save();
+          checkUserAndPassword();
+        }
+      },
     );
+  }
+
+  void checkUserAndPassword() async {
+
+    String urlPHP = 'https://www.androidthai.in.th/tid/getUserWhereUserMaster.php?isAdd=true&User=$user';
+
+    var response = await get(urlPHP);
+    var result = json.decode(response.body);
+    print('result ==> $result');
+
   }
 
   Widget showPassword() {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Password :', hintText: 'More 6 Charactor'),
+      validator: (String value) {
+        if (value.length <= 5) {
+          return 'Password ต้องมากกว่า 6 ตัวอักษร';
+        }
+      },
+      onSaved: (String value) {
+        password = value;
+      },
     );
   }
 
   Widget showUser() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'User :', hintText: 'Your User'),
+      validator: (String value) {
+        if (value.length == 0) {
+          return 'กรอก User';
+        }
+      },
+      onSaved: (String value) {
+        user = value;
+      },
     );
   }
 
@@ -56,8 +92,10 @@ class _AuthenState extends State<Authen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Container(
+      resizeToAvoidBottomPadding: false,
+      body: Form(
+        key: formKey,
+        child: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
                   colors: [Colors.white, Colors.yellow[900]],
@@ -94,6 +132,8 @@ class _AuthenState extends State<Authen> {
               )
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
